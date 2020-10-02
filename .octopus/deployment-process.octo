@@ -16,4 +16,8 @@ steps "Run a Script" {
             Octopus_Action_Script_ScriptBody = "echo $MyVariable"
         }
     }
+
+    properties {
+        Octopus_Action_TargetRoles = "idontexistanymore"
+    }
 }
