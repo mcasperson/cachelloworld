@@ -13,7 +13,7 @@ steps "Run a Script" {
             Octopus_Action_RunOnServer = "true"
             Octopus_Action_Script_ScriptSource = "Inline"
             Octopus_Action_Script_Syntax = "PowerShell"
-            Octopus_Action_Script_ScriptBody = "echo \"hello world\""
+            Octopus_Action_Script_ScriptBody = "echo \"hello world from my feature\""
         }
     }
 }
