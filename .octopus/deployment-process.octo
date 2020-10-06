@@ -17,3 +17,55 @@ steps "Run a Script" {
         }
     }
 }
+
+steps "Deploy Kubernetes containers" {
+    condition = "Success"
+    package_requirement = "LetOctopusDecide"
+    start_trigger = "StartAfterPrevious"
+
+    actions "Deploy Kubernetes containers" {
+        action_type = "Octopus.KubernetesDeployContainers"
+        condition = "Success"
+        is_disabled = false
+        is_required = false
+
+        packages "a" {
+            acquisition_location = "NotAcquired"
+            feed_id_or_name = "Feeds-3021"
+            package_id = "nginx"
+
+            properties {
+                key = "Extract"
+                value = "False"
+            }
+
+            properties {
+                key = "PackageParameterName"
+                value = ""
+            }
+
+            properties {
+                key = "SelectionMode"
+                value = "immediate"
+            }
+        }
+
+        properties {
+            Octopus_Action_EnabledFeatures = ",Octopus.Features.KubernetesService,Octopus.Features.KubernetesIngress,Octopus.Features.KubernetesConfigMap,Octopus.Features.KubernetesSecret"
+            Octopus_Action_KubernetesContainers_ServiceType = "ClusterIP"
+            Octopus_Action_KubernetesContainers_IngressAnnotations = "[]"
+            Octopus_Action_KubernetesContainers_Replicas = "1"
+            Octopus_Action_KubernetesContainers_DeploymentStyle = "RollingUpdate"
+            Octopus_Action_KubernetesContainers_PodManagementPolicy = "OrderedReady"
+            Octopus_Action_KubernetesContainers_ServiceNameType = "External"
+            Octopus_Action_KubernetesContainers_DeploymentResourceType = "Deployment"
+            Octopus_Action_KubernetesContainers_DeploymentWait = "Wait"
+            Octopus_Action_KubernetesContainers_DeploymentName = "a"
+            Octopus_Action_KubernetesContainers_Containers = "[{\"Name\":\"a\",\"Ports\":[],\"EnvironmentVariables\":[],\"SecretEnvironmentVariables\":[],\"ConfigMapEnvironmentVariables\":[],\"FieldRefEnvironmentVariables\":[],\"ConfigMapEnvFromSource\":[],\"SecretEnvFromSource\":[],\"VolumeMounts\":[],\"Resources\":{\"requests\":{\"memory\":\"\",\"cpu\":\"\",\"ephemeralStorage\":\"\",\"amdGpu\":\"\",\"nvidiaGpu\":\"\",\"storage\":\"\"},\"limits\":{\"memory\":\"\",\"cpu\":\"\",\"ephemeralStorage\":\"\",\"amdGpu\":\"\",\"nvidiaGpu\":\"\",\"storage\":\"\"}},\"LivenessProbe\":{\"failureThreshold\":\"\",\"initialDelaySeconds\":\"\",\"periodSeconds\":\"\",\"successThreshold\":\"\",\"timeoutSeconds\":\"\",\"type\":\"\",\"exec\":{\"command\":[]},\"httpGet\":{\"host\":\"\",\"path\":\"\",\"port\":\"\",\"scheme\":\"\",\"httpHeaders\":[]},\"tcpSocket\":{\"host\":\"\",\"port\":\"\"}},\"ReadinessProbe\":{\"failureThreshold\":\"\",\"initialDelaySeconds\":\"\",\"periodSeconds\":\"\",\"successThreshold\":\"\",\"timeoutSeconds\":\"\",\"type\":\"\",\"exec\":{\"command\":[]},\"httpGet\":{\"host\":\"\",\"path\":\"\",\"port\":\"\",\"scheme\":\"\",\"httpHeaders\":[]},\"tcpSocket\":{\"host\":\"\",\"port\":\"\"}},\"StartupProbe\":{\"failureThreshold\":\"\",\"initialDelaySeconds\":\"\",\"periodSeconds\":\"\",\"successThreshold\":\"\",\"timeoutSeconds\":\"\",\"type\":\"\",\"exec\":{\"command\":[]},\"httpGet\":{\"host\":\"\",\"path\":\"\",\"port\":\"\",\"scheme\":\"\",\"httpHeaders\":[]},\"tcpSocket\":{\"host\":\"\",\"port\":\"\"}},\"Command\":[],\"Args\":[],\"SecurityContext\":{\"allowPrivilegeEscalation\":\"\",\"privileged\":\"\",\"readOnlyRootFilesystem\":\"\",\"runAsGroup\":\"\",\"runAsNonRoot\":\"\",\"runAsUser\":\"\",\"capabilities\":{\"add\":[],\"drop\":[]},\"seLinuxOptions\":{\"level\":\"\",\"role\":\"\",\"type\":\"\",\"user\":\"\"}},\"TerminationMessagePath\":\"\",\"TerminationMessagePolicy\":\"\",\"Lifecycle\":{\"PreStop\":null,\"PostStart\":null}}]"
+        }
+    }
+
+    properties {
+        Octopus_Action_TargetRoles = "k8s"
+    }
+}
