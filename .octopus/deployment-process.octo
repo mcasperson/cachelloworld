@@ -8,16 +8,73 @@ steps "Run a Script" {
         condition = "Success"
         is_disabled = false
         is_required = false
+        worker_pool_id_or_name = "Hosted Windows"
 
         properties {
             Octopus_Action_RunOnServer = "true"
             Octopus_Action_Script_ScriptSource = "Inline"
             Octopus_Action_Script_Syntax = "PowerShell"
-            Octopus_Action_Script_ScriptBody = "echo $MyVariable"
+            Octopus_Action_Script_ScriptBody = "Echo \"Hello World!\""
+        }
+    }
+}
+
+steps "Upgrade a Helm Chart" {
+    condition = "Success"
+    package_requirement = "LetOctopusDecide"
+    start_trigger = "StartAfterPrevious"
+
+    actions "Upgrade a Helm Chart" {
+        action_type = "Octopus.HelmChartUpgrade"
+        condition = "Success"
+        is_disabled = false
+        is_required = false
+        worker_pool_variable = ""
+
+        properties {
+            Octopus_Action_Helm_ResetValues = "True"
+            Octopus_Action_Helm_ClientVersion = "V3"
+        }
+    }
+}
+
+steps "Deploy a Package" {
+    condition = "Success"
+    package_requirement = "LetOctopusDecide"
+    start_trigger = "StartAfterPrevious"
+
+    actions "Deploy a Package" {
+        action_type = "Octopus.TentaclePackage"
+        condition = "Success"
+        is_disabled = false
+        is_required = false
+        worker_pool_variable = ""
+
+        packages {
+            acquisition_location = "Server"
+            feed_id_or_name = "Feeds-1021"
+            package_id = "#{Octopus.Account.AccountType}"
+
+            properties {
+                SelectionMode = "immediate"
+            }
+        }
+
+        properties {
+            Octopus_Action_Package_AutomaticallyRunConfigurationTransformationFiles = "True"
+            Octopus_Action_Package_AutomaticallyUpdateAppSettingsAndConnectionStrings = "True"
+            Octopus_Action_EnabledFeatures = "Octopus.Features.ConfigurationVariables,Octopus.Features.ConfigurationTransforms,Octopus.Features.SubstituteInFiles"
+            Octopus_Action_SubstituteInFiles_TargetFiles = <<-EOT
+                    **/boo.txt
+                    *.txt
+                EOT
+            Octopus_Action_Package_PackageId = "#{Octopus.Account.AccountType}"
+            Octopus_Action_Package_FeedId = "Feeds-1021"
+            Octopus_Action_Package_DownloadOnTentacle = "False"
         }
     }
 
     properties {
-        Octopus_Action_TargetRoles = "idontexistanymore"
+        Octopus_Action_TargetRoles = "dfdf"
     }
 }
