@@ -10,6 +10,17 @@ steps "Run a Script" {
         is_required = false
         worker_pool_id_or_name = "Hosted Windows"
 
+        packages "test" {
+            acquisition_location = "Server"
+            feed_id_or_name = "Feeds-1021"
+            package_id = "test"
+
+            properties {
+                Extract = "True"
+                SelectionMode = "immediate"
+            }
+        }
+
         properties {
             Octopus_Action_RunOnServer = "true"
             Octopus_Action_Script_ScriptSource = "Inline"
