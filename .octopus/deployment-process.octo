@@ -27,7 +27,7 @@ steps "Upgrade a Helm Chart" {
     actions "Upgrade a Helm Chart" {
         action_type = "Octopus.HelmChartUpgrade"
         condition = "Success"
-        is_disabled = false
+        is_disabled = true
         is_required = false
         worker_pool_variable = ""
 
@@ -46,7 +46,7 @@ steps "Deploy a Package" {
     actions "Deploy a Package" {
         action_type = "Octopus.TentaclePackage"
         condition = "Success"
-        is_disabled = false
+        is_disabled = true
         is_required = false
         worker_pool_variable = ""
 
