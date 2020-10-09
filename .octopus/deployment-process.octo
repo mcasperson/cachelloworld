@@ -21,6 +21,17 @@ steps "Run a Script" {
             }
         }
 
+        packages "anotherproject" {
+            acquisition_location = "Server"
+            feed_id_or_name = "Feeds-1021"
+            package_id = "anotherproject"
+
+            properties {
+                Extract = "False"
+                SelectionMode = "immediate"
+            }
+        }
+
         properties {
             Octopus_Action_RunOnServer = "true"
             Octopus_Action_Script_ScriptSource = "Inline"
